@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Dept.xml 在com.tarena.entity 包中  -->  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="cn.hdu.HDU_Minitor.dao.UserDao">
+ 	<select id="findByUserPhone" parameterType="String" 
+ 								resultType="cn.hdu.HDU_Minitor.entity.User">
+ 		SELECT * FROM hdu_monitor_user WHERE user_phone=#{userPhone}
+ 									
+    </select>
+
+ </mapper>
+
+
+
+
+
+
+
+
