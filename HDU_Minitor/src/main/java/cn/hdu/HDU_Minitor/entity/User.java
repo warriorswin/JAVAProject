@@ -1,12 +1,14 @@
 package cn.hdu.HDU_Minitor.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable{
 	private String user_id;
 	private String user_phone;
 	private String user_password;
 	private String user_name;
+	private List<Build> builds;
 	/**
 	 * @return the user_id
 	 */
@@ -56,14 +58,21 @@ public class User implements Serializable{
 		this.user_name = user_name;
 	}
 	
-	@Override
-	public 	String toString() {
-		return "User[user_id:"+user_id+" user_phone:"
-							  +user_phone+" user_password:"
-							  +user_password+" user_name:"
-							  +user_name+"]";
-		
+	public List<Build> getBuilds() {
+		return builds;
 	}
+	public void setBuilds(List<Build> builds) {
+		this.builds = builds;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [user_id=" + user_id + ", user_phone=" + user_phone + ", user_password=" + user_password
+				+ ", user_name=" + user_name + ", builds=" + builds + "]";
+	}
+	
+	
+	
 	
 
 }
