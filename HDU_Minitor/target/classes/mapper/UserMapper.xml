@@ -8,7 +8,36 @@
  		SELECT * FROM hdu_monitor_user WHERE user_phone=#{userPhone}
  									
     </select>
-
+    <!-- 
+	  存入用户信息以及监控权限
+	 @param user 用户信息及监控权限
+	 @return 存入内容的个数，成功为非零，失败为零
+     -->
+	<insert id="saveUser" parameterType="cn.hdu.HDU_Minitor.entity.User" >
+		<!-- 插入用户的基本信息 -->
+		INSERT INTO hdu_monitor_user 
+			(user_id,user_phone,user_password,user_name)
+		VALUES
+			(#{user_id},#{user_phone},#{user_password},#{user_name});
+		<!-- 插入用户与 监控楼层的对应关系-->
+		INSERT INTO hdu_user_role_build
+			(user_id,build_id)
+		VALUES
+			<foreach collection="builds" item="build" separator="," close=";">
+				(#{user_id},#{build.buildID})
+			</foreach>
+		<!-- 插入用户与监控房间的对应关系 -->
+		INSERT INTO hdu_user_role_room
+			(user_id,room_id)
+		VALUES
+			<foreach collection="builds" item="build" separator="," close=";">
+				<foreach collection="build.rooms" item="room" separator=",">
+					(#{user_id},#{room.roomID})
+				</foreach>
+			</foreach>
+	</insert>
+	
+	
  </mapper>
 
 

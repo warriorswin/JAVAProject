@@ -1,0 +1,59 @@
+package cn.hdu.HDU_Minitor.entity;
+
+import java.io.Serializable;
+
+/**
+ * Room类表示监控的具体房间
+ * @author yw
+ *
+ */
+public class Room implements Serializable{
+	private static final long serialVersionUID = 1L;
+	//房间的ID号
+	private String roomID;
+	//房间的名字
+	private String roomName;
+	//房间对应的监控楼
+	private Build build;
+	//房间对应的设备，暂时由String类型代替
+	//TODO 需要修改
+	private String device;
+	
+	public String getRoomID() {
+		return roomID;
+	}
+	
+	public void setRoomID(String roomID) {
+		this.roomID = roomID;
+	}
+	
+	public String getRoomName() {
+		return roomName;
+	}
+	
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+	
+	public Build getBuild() {
+		return build;
+	}
+	
+	public void setBuild(Build build) {
+		this.build = build;
+	}
+	
+	public String getDevice() {
+		return device;
+	}
+	
+	public void setDevice(String device) {
+		this.device = device;
+	}
+	
+	@Override
+	public String toString() {
+		return "Room [roomID=" + roomID + ", roomName=" + roomName + ", build=" + build + ", device=" + device + "]";
+	}
+	
+}

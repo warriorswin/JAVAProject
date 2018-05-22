@@ -12,6 +12,7 @@ public class MinitorUtil {
 		return id.replace("-","");
 	}
 	public static void main(String[] args) {
+		for(int i=0;i<11;i++)
 		System.out.println(MinitorUtil.createId());
 	}
 }
