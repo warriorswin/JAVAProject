@@ -1,109 +1,118 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="zh" xmlns="http://www.w3.org/1999/xhtml"><head>
-<title>电气火灾监控系统平台登录</title> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>电气火灾监控系统平台登录</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/login2.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+
+</style>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
 <script type="text/javascript" src="js/basevalue.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
 
 </head>
 <body>
-<h1>HDU_电气火灾监控云平台</h1>
-<div class="login" style="margin-top:70px;">
-    
-    <div class="header">
-        <div class="switch" id="switch"><a class="switch_btn_focus" id="switch_qlogin" href="javascript:void(0);" tabindex="7">快速登录</a>
-			<a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">随机密码登录</a><div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: 0px;"></div>
-        </div>
-    </div>    
-  
-    
-    <div class="web_qr_login" id="web_qr_login" style="display: block; height: 235px;">    
+	<h1>HDU_电气火灾监控云平台</h1>
+	<div class="login" style="margin-top: 70px;">
 
-            <!--登录-->
-            <div class="web_login" id="web_login">
-             <div class="login-box">
-    			<div class="login_form">
-				<form  name="loginform" 
-				accept-charset="utf-8" id="login_form" 
-				class="loginForm" >
-                <div class="uinArea" id="uinArea">
-                <label class="input-tips" for="u">帐号：</label>
-                <div class="inputOuter" id="uArea">
-                    <input type="text" id="userPhone" 
-                    placeholder="手机号"  
-                    class="inputstyle"/>
-                   
-                </div>
-                </div>
-                <div class="pwdArea" id="pwdArea">
-               <label class="input-tips" for="p">密码：</label> 
-               <div class="inputOuter" id="pArea">
-                    
-                    <input type="password" id="password"
-                     placeholder="大于6位的字母或者数字" 
-                     class="inputstyle"/>
-                </div>
-           
-                </div>
-               
-                <div style="padding-left:85px;margin-top:20px;">
-                <input id="login" type="submit" value="登 录" style="width:200px;" 
-                class="button_blue"/></div>
-              </form>
-           </div>
-           
-            	</div>
-               
-            </div>
-            <!--登录end-->
-  </div>
+		<div class="header">
+			<div class="switch" id="switch">
+				<a class="switch_btn_focus" id="switch_qlogin"
+					href="javascript:void(0);" tabindex="7">快速登录</a> <a
+					class="switch_btn" id="switch_login" href="javascript:void(0);"
+					tabindex="8">随机密码登录</a>
+				<div class="switch_bottom" id="switch_bottom"
+					style="position: absolute; width: 85px; left: 0px;"></div>
+			</div>
+		</div>
 
-  <!--随机密码登录-->
-    <div class="qlogin" id="qlogin" style="display: none; ">
-   
-    <div class="web_login">
-    <form name="form2" id="regUser" 
-    accept-charset="utf-8"  action="" method="post">
-        <ul class="reg_form" id="reg-ul">
-                <li>
-                	 <label for="user"  class="input-tips2"  >账&nbsp;&nbsp;号：</label>
-                    <div class="inputOuter2">
-                        <input type="text" id="user"
-                         name="user" maxlength="16" 
-                         class="inputstyle2" 
-                         placeholder="手机号"/>
-                       
-                    </div>
-                </li>
-                <!-- 点击后插入li,并将获取随机密码改成随机密码登录 -->
-                <li>
-                <label for="passwd" class="input-tips2">随机密码：</label>
-                    <div class="inputOuter2">
-                        <input type="password" id="passwd"  
-                        name="passwd" maxlength="16" 
-                        class="inputstyle2" 
-                        placeholder="收到的随机密码"/>
-                    </div>
-                </li>
-          
-                
-                
-                <li>
-                    <div class="inputArea">
-                        <input type="button" id="reg"  
-                        style="margin-top:10px;margin-left:85px;width:200px;" 
-                        class="button_blue" value="获取随机密码"/> 
-                    </div>
-                    
-                </li><div class="cl"></div>
-            </ul></form>
-           
-    
-    </div>
-    </div>
-    <!--注册end-->
-</div>
+
+		<div class="web_qr_login" id="web_qr_login"
+			style="display: block; height: 235px;">
+
+			<!--登录-->
+			<div class="web_login" id="web_login">
+				<div class="login-box">
+					<div class="login_form">
+						<form name="loginform" accept-charset="utf-8" id="login_form"
+							class="loginForm">
+							<div class="uinArea" id="uinArea">
+								<label class="input-tips" for="u">帐号：</label>
+								<div class="inputOuter" id="uArea">
+									<input type="text" id="userPhone" placeholder="手机号"
+										class="inputstyle" />
+
+								</div>
+							</div>
+							<div class="pwdArea" id="pwdArea">
+								<label class="input-tips" for="p">密码：</label>
+								<div class="inputOuter" id="pArea">
+
+									<input type="password" id="password" placeholder="大于6位的字母或者数字"
+										class="inputstyle" />
+								</div>
+
+							</div>
+
+							<div style="padding-left: 85px; margin-top: 20px;">
+								<input id="login" type="submit" value="登 录"
+									style="width: 200px;" class="button_blue" />
+							</div>
+						</form>
+					</div>
+
+				</div>
+
+			</div>
+			<!--登录end-->
+		</div>
+
+		<!--随机密码登录-->
+		<div class="web_qr_login" id="qlogin"
+			style="display: none height: 235px;">
+
+			<div class="web_login">
+				<form name="form2" id="regUser" accept-charset="utf-8">
+					<ul class="reg_form" id="reg-ul">
+						<li><label for="user" class="input-tips2">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
+							<div class="inputOuter">
+								<input type="text" id="user" name="user" maxlength="16"
+									class="inputstyle" placeholder="手机号" />
+
+							</div></li>
+						<!-- 点击后插入li,并将获取随机密码改成随机密码登录 -->
+						<li><label for="passwd" class="input-tips2">随机密码：</label>
+							<div class="inputOuter">
+								<input type="password" name="password1" style="display: none" />
+								<input type="password" id="passwd" name="passwd" maxlength="16"
+									class="inputstyle" placeholder="收到的随机密码" autocomplete="off" />
+									
+							</div>
+						</li>
+						<li>
+							<div class="inputArea"
+								style="margin-top: 20px; margin-left: 100px; width: 200px;">
+								<input type="button" id="reg" class="button_blue" value="获取随机密码"
+									style="width: 200px;" />
+								<input type="button" id="reg_login" class="button_blue" value="临时登录"
+									style="width: 200px;display:none" />
+							</div>
+
+						</li>
+						<div class="cl"></div>
+					</ul>
+				</form>
+
+
+			</div>
+		</div>
+		<!--注册end-->
+	</div>
+	<div class="logo" systle="width:960px;margin:0 auto;">
+		<p align="center">©2018&nbsp;杭电版权所有，违者必究&nbsp;</p>
+	</div>
+
 </body>
 </html>
