@@ -94,12 +94,16 @@ function sendAjax(userPhone,password){
 		url:path+"/user/login.do",
 		type:"post",
 		data:{"userPhone":userPhone,
-			   "password":password},
+			   "password":password
+			   },
 		dataType:"json",
 		success:function(result){
 			if(result.status==0){
-				alert(result.msg);
-				window.location.href="eidt.html";
+				//保存user_user_id为cookie
+				var user_id=result.data;
+				alert(user_id);
+				addCookie("user_id",user_id,1);
+				window.location.href="html/admin.html";
 			}else{
 				if(result.status==1){
 					//没有该用户
@@ -116,7 +120,7 @@ function sendAjax(userPhone,password){
 			}
 		},
 		error:function(){
-			alert("error");
+			alert("error:请检查网络");
 		}
 		
 	});
