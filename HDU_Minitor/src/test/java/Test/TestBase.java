@@ -7,7 +7,8 @@ public  abstract class TestBase {
 	public ApplicationContext getContext() {
 		System.out.println("getContext()");
 		String[] conf= {"conf/spring-mvc.xml",
-						"conf/spring-mybatis.xml"};
+						"conf/spring-mybatis.xml",
+						"conf/spring-transaction.xml"};
 		ApplicationContext ctx=new 
 				ClassPathXmlApplicationContext(conf);
 		return ctx;

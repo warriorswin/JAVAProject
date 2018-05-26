@@ -67,8 +67,14 @@ public class Build implements Serializable{
 		return "Build [buildID=" + buildID + ", buildNumber=" + buildNumber + ", buildName=" + buildName + ", rooms="
 				+ rooms + ", users=" + users + "]";
 	}
-
 	
+	public boolean checkBuild(List<String> buildIDs) {
+		if(buildIDs!=null) {
+			return buildIDs.contains(this.buildID);
+		}else {
+			return false;
+		}
+	}
 
 	
 }

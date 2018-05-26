@@ -1,6 +1,7 @@
 package cn.hdu.HDU_Minitor.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Room类表示监控的具体房间
@@ -55,5 +56,11 @@ public class Room implements Serializable{
 	public String toString() {
 		return "Room [roomID=" + roomID + ", roomName=" + roomName + ", build=" + build + ", device=" + device + "]";
 	}
-	
+	public boolean checkRoom(List<String> roomIDs) {
+		if(roomIDs!=null) {
+			return roomIDs.contains(this.roomID);
+		}else {
+			return false;
+		}
+	}
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Dept.xml 在com.tarena.entity 包中 -->  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.hdu.HDU_Minitor.dao.RoomDao">
+	<!-- 查询关联的监控房间 -->
+	<select id="findRoomById" parameterType="java.util.Map"
+		resultMap="RoomResultMap">
+
+		SELECT r.room_id,r.room_name FROM (
+		SELECT
+		HMBR.* FROM
+		hdu_monitor_build_room HMBR WHERE HMBR.room_id IN
+		(SELECT
+		HURR.room_id
+		FROM hdu_user_role_room HURR WHERE user_id=#{userID})
+		) r
+		WHERE
+		r.build_id=#{buildID}
+
+	</select>
+	<resultMap type="cn.hdu.HDU_Minitor.entity.Room"
+		id="RoomResultMap">
+		<id column="room_id" property="roomID" />
+		<result column="room_name" property="roomName" />
+	</resultMap>
+</mapper>
