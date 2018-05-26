@@ -5,9 +5,7 @@ import cn.hdu.HDU_Minitor.util.MinitorResult;
 
 public interface UserService {
 	public MinitorResult<Object> checkLogin(String userPhone,String password);
-<<<<<<< HEAD
 	public MinitorResult<Object> RdmPwdGenertor(String userPhone);
-=======
 	
 	/**
 	 * 插入或修改用户信息
@@ -15,5 +13,4 @@ public interface UserService {
 	 * @return MinitorResult<Object> 处理结果类
 	 */
 	public MinitorResult<Object> insertOrUpdateUserInfo(User user);
->>>>>>> yw
 }
