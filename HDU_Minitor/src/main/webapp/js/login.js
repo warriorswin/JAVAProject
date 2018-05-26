@@ -101,7 +101,6 @@ function sendAjax(userPhone,password){
 			if(result.status==0){
 				//保存user_user_id为cookie
 				var user_id=result.data;
-				alert(user_id);
 				addCookie("user_id",user_id,1);
 				window.location.href="html/admin.html";
 			}else{
