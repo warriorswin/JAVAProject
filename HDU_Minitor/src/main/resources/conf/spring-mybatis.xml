@@ -30,6 +30,7 @@
 	<bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dbcp"></property>
 		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+		<property name="configLocation" value="classpath:conf/mybatis-config.xml"></property>	
 	</bean>
 	<!-- 配置mapper扫描 -->
 	

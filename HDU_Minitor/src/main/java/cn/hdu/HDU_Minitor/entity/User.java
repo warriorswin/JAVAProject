@@ -1,13 +1,21 @@
 package cn.hdu.HDU_Minitor.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 public class User implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	//用户的id
 	private String user_id;
+	//用户的电话
 	private String user_phone;
+	//用户的密码
 	private String user_password;
+	//用户的名字
 	private String user_name;
+	//用户所监控的监控楼
 	private List<Build> builds;
 	/**
 	 * @return the user_id
@@ -71,6 +79,21 @@ public class User implements Serializable{
 				+ ", user_name=" + user_name + ", builds=" + builds + "]";
 	}
 	
+	
+	public Map<String, String> checkUser(User user){
+		Map<String,String> result = new HashMap<String,String>();
+		result.put("user_id", this.user_id);
+		if(!this.user_phone.equals(user.getUser_phone())) {
+			result.put("user_phone", this.user_phone);
+		}
+		if(!this.user_password.equals(user.getUser_password())) {
+			result.put("user_password", this.user_password);
+		}
+		if(!this.user_name.equals(user.getUser_name())) {
+			result.put("user_name", this.user_name);
+		}
+		return result;
+	}
 	
 	
 	

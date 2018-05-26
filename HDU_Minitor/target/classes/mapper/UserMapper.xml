@@ -1,44 +1,116 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<!-- Dept.xml 在com.tarena.entity 包中  -->  
+<!-- Dept.xml 在com.tarena.entity 包中 -->  
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
- <mapper namespace="cn.hdu.HDU_Minitor.dao.UserDao">
- 	<select id="findByUserPhone" parameterType="String" 
- 								resultType="cn.hdu.HDU_Minitor.entity.User">
- 		SELECT * FROM hdu_monitor_user WHERE user_phone=#{userPhone}
- 									
-    </select>
-    <!-- 
-	  存入用户信息以及监控权限
-	 @param user 用户信息及监控权限
-	 @return 存入内容的个数，成功为非零，失败为零
-     -->
-	<insert id="saveUser" parameterType="cn.hdu.HDU_Minitor.entity.User" >
+<mapper namespace="cn.hdu.HDU_Minitor.dao.UserDao">
+
+	<!-- 通过用户的手机号来查询user信息 @param userPhone 用户的电话号码 @return 用户信息以及监控权限 -->
+	<select id="findByUserPhone" parameterType="String"
+		resultMap="UserAndBuildResultMap">
+		SELECT * FROM hdu_monitor_user WHERE
+		user_phone=#{user_phone}
+	</select>
+
+	<!-- 通过用户的ID来查询user信息 @param userID 用户ID @return 用户的信息 -->
+	<select id="findByUserID" resultMap="UserAndBuildResultMap">
+		SELECT * FROM
+		hdu_monitor_user WHERE
+		user_id=#{userID}
+	</select>
+
+	<resultMap type="cn.hdu.HDU_Minitor.entity.User"
+		id="UserAndBuildResultMap">
+		<id column="user_id" property="user_id" />
+		<result column="user_phone" property="user_phone" />
+		<result column="user_password" property="user_password" />
+		<result column="user_name" property="user_name" />
+		<collection property="builds"
+			ofType="cn.hdu.HDU_Minitor.entity.Build"
+			select="cn.hdu.HDU_Minitor.dao.BuildDao.findBuildById"
+			column="userID=user_id">
+		</collection>
+	</resultMap>
+
+	<!-- 存入用户信息以及监控权限 @param user 用户信息及监控权限 @return 存入内容的个数，成功为非零，失败为零 -->
+	<insert id="saveUser"
+		parameterType="cn.hdu.HDU_Minitor.entity.User">
 		<!-- 插入用户的基本信息 -->
-		INSERT INTO hdu_monitor_user 
+		<if test="user_phone!=null and user_phone!=''">
+			INSERT INTO hdu_monitor_user
 			(user_id,user_phone,user_password,user_name)
-		VALUES
+			VALUES
 			(#{user_id},#{user_phone},#{user_password},#{user_name});
-		<!-- 插入用户与 监控楼层的对应关系-->
-		INSERT INTO hdu_user_role_build
-			(user_id,build_id)
-		VALUES
-			<foreach collection="builds" item="build" separator="," close=";">
-				(#{user_id},#{build.buildID})
+		</if>
+		<!-- 插入用户与 监控楼层的对应关系 -->
+		<if test="builds != null and builds.size()!=0">
+			<foreach collection="builds" item="build">
+				<if test="build.buildID != null">
+					INSERT INTO hdu_user_role_build
+					(user_id,build_id)
+					VALUES
+					(#{user_id},#{build.buildID});
+				</if>
 			</foreach>
+		</if>
 		<!-- 插入用户与监控房间的对应关系 -->
-		INSERT INTO hdu_user_role_room
-			(user_id,room_id)
-		VALUES
-			<foreach collection="builds" item="build" separator="," close=";">
-				<foreach collection="build.rooms" item="room" separator=",">
-					(#{user_id},#{room.roomID})
-				</foreach>
+		<if test="builds != null and builds.size()!=0">
+			<foreach collection="builds" item="build">
+				<if test="build.rooms!=null and build.rooms.size()!=0">
+					INSERT INTO hdu_user_role_room
+					(user_id,room_id)
+					VALUES
+					<foreach collection="build.rooms" item="room" separator=",">
+						(#{user_id},#{room.roomID})
+					</foreach>
+					;
+				</if>
 			</foreach>
+		</if>
 	</insert>
-	
-	
- </mapper>
+	<!-- -->
+	<update id="updateUser">
+		UPDATE hdu_monitor_user
+		<set>
+			<if test="user_phone!=null and user_phone!=''">user_phone=#{user_phone}</if>
+			<if test="user_password!=null and user_password!=''">user_password=#{user_password}</if>
+			<if test="user_name!=null and user_name!=''">user_name=#{user_name}</if>
+		</set>
+		WHERE user_id=#{user_id}
+	</update>
+
+	<!-- -->
+	<delete id="deleteUser"
+		parameterType="cn.hdu.HDU_Minitor.entity.User">
+		<if test="builds!=null and builds.size()!=0">
+			<foreach collection="builds" item="build">
+				<if test="build.buildID!=null">
+					DELETE FROM hdu_user_role_build
+					WHERE
+					(user_id =
+					#{user_id} AND build_id = #{build.buildID});
+				</if>
+			</foreach>
+		</if>
+		<if test="builds!=null and builds.size()!=0">
+			<foreach collection="builds" item="build">
+				<if test="build.rooms!=null and build.rooms.size()!=0">
+					DELETE FROM hdu_user_role_room
+					WHERE
+					<foreach collection="build.rooms" item="room"
+						separator="or">
+						(user_id = #{user_id} AND room_id = #{room.roomID})
+					</foreach>
+					;
+				</if>
+			</foreach>
+		</if>
+
+		<if test="user_phone!=null and user_phone!=''">
+			DELETE FROM hdu_monitor_user
+			WHERE user_phone=#{user_phone}
+		</if>
+	</delete>
+</mapper>
 
 
 
