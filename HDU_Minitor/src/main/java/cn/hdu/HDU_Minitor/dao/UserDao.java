@@ -1,5 +1,6 @@
 package cn.hdu.HDU_Minitor.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.hdu.HDU_Minitor.entity.User;
@@ -12,6 +13,12 @@ public interface UserDao {
 	 * @return 用户信息以及监控权限
 	 */
 	User findByUserPhone(String userPhone);
+	/**
+	 * 查询除了管理员use_id之外的所有用户
+	 * @param adminID管理员的user_id
+	 */
+	
+	List<User>findAllUser(String adminID);
 	
 	/**
 	 * 通过用户的ID来查询user信息
@@ -40,4 +47,9 @@ public interface UserDao {
 	 * @return 更新是否成功，成功为非零，失败为零
 	 */
 	Integer deleteUser(User user);
+	
+	/*
+	 * 根据user_id删除用户
+	 */
+	 Integer deleteUserByUId(String user_id);
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Dept.xml 在com.tarena.entity 包中 -->  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.hdu.HDU_Minitor.dao.UserRoomDao">
+	<select id="findURByRId" parameterType="string" 
+							resultType="cn.hdu.HDU_Minitor.entity.UserRoom">
+		SELECT * FROM hdu_user_role_room WHERE room_id=#{room_id}
+	</select>
+	<insert id="save" parameterType="Map">
+		INSERT INTO hdu_user_role_room(user_id,room_id) 
+		VALUES(#{user_id},#{room_id})
+	
+	</insert>
+	<delete id="deleteByUId" parameterType="String">
+		DELETE FROM hdu_user_role_room WHERE user_id=#{user_id}
+	</delete>
+	<delete id="delete" parameterType="Map">
+		DELETE FROM hdu_user_role_room 
+		WHERE user_id=#{user_id}
+		<if test="room_id!=null">
+		AND room_id=#{room_id}
+		</if>
+	</delete>
+</mapper>

@@ -31,6 +31,11 @@ public class TestUser extends TestBase {
 		System.out.println(user);
 		
 	}
+	@Test
+	public void testFindAllUser() {
+		List<User> users=userDao.findAllUser("df38dd9ae1b34027acce21b8da08468f");
+		System.out.println(users);
+	}
 	/*
 	 * 信息要全部添加进去
 	 */
@@ -40,7 +45,7 @@ public class TestUser extends TestBase {
 		user.setUser_id("1b6283c493a7492e9ed9d23764500061");
 		user.setUser_name("admin1");
 		user.setUser_password("123456");
-		user.setUser_phone("11111111111");
+		user.setUser_phone("15549432607");
 		Build build1 = new Build();
 		Build build2 = new Build();
 		build1.setBuildID("24f3508be4154820b12c336fc30cd343");

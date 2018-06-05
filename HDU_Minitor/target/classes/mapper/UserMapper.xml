@@ -10,7 +10,14 @@
 		SELECT * FROM hdu_monitor_user WHERE
 		user_phone=#{user_phone}
 	</select>
-
+	<!-- 查询所有的用户 user_id不为管理员user_id的所有用户 -->
+	 
+	<select id="findAllUser" parameterType="String" 
+				resultType="cn.hdu.HDU_Minitor.entity.User">
+		SELECT * FROM hdu_monitor_user WHERE user_id!=#{userID}
+	</select>
+	
+	
 	<!-- 通过用户的ID来查询user信息 @param userID 用户ID @return 用户的信息 -->
 	<select id="findByUserID" resultMap="UserAndBuildResultMap">
 		SELECT * FROM
@@ -79,6 +86,7 @@
 	</update>
 
 	<!-- -->
+	
 	<delete id="deleteUser"
 		parameterType="cn.hdu.HDU_Minitor.entity.User">
 		<if test="builds!=null and builds.size()!=0">
@@ -109,6 +117,9 @@
 			DELETE FROM hdu_monitor_user
 			WHERE user_phone=#{user_phone}
 		</if>
+	</delete>
+	<delete id="deleteUserByUId" parameterType="String">
+		DELETE FROM hdu_monitor_user WHERE user_id=#{user_id}
 	</delete>
 </mapper>
 
