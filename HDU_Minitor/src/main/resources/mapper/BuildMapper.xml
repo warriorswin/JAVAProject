@@ -23,4 +23,19 @@
 			column="{userID=uid,buildID=build_id}">
 		</collection>
 	</resultMap>
+	
+	<select id="findBuildByNum" parameterType="String" resultMap="Build1">
+	  SELECT * FROM hdu_monitor_build WHERE build_number=#{build_number}
+	</select>
+	<resultMap id="Build1" type="cn.hdu.HDU_Minitor.entity.Build">
+		<id property="buildID" column="build_id"></id>
+		<result property="buildName" column="build_name"></result>
+		<result property="buildNumber" column="build_number"></result>
+	</resultMap>
+
+	<insert id="save" parameterType="cn.hdu.HDU_Minitor.entity.Build">
+		INSERT INTO hdu_monitor_build(build_id,build_number,build_name) 
+		VALUES(#{buildID},#{buildNumber},#{buildName})
+	</insert>
+	
 </mapper>

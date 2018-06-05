@@ -100,8 +100,12 @@ function sendAjax(userPhone,password){
 		success:function(result){
 			if(result.status==0){
 				//保存user_user_id为cookie
-				var user_id=result.data;
+				var data=result.data;
+				var user_id=data.user_id;
+				var user_name=data.user_name;
 				addCookie("user_id",user_id,1);
+				addCookie("user_name",user_name,1);
+				//管理员登录登录 status=3普通用户
 				window.location.href="html/admin.html";
 			}else{
 				if(result.status==1){

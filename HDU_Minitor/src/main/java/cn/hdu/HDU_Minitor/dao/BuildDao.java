@@ -1,6 +1,9 @@
 package cn.hdu.HDU_Minitor.dao;
 
-public class BuildDao {
+import cn.hdu.HDU_Minitor.entity.Build;
 
-	
+public interface BuildDao {
+
+	public Build findBuildByNum(String build_num);
+	public int save(Build build);
 }

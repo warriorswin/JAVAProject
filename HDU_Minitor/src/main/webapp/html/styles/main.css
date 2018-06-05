@@ -9224,7 +9224,7 @@ a:hover,a:focus {
 	display: block;
 	font-size: 16px;
 	font-weight: 300;
-	padding: 0 0 0 20px;
+	padding: 0 0 0 10px;
 	line-height: 30px;
 	-webkit-transition: background-color .3s ease;
 	-ms-transition: background-color .3s ease;
@@ -11196,7 +11196,7 @@ body.gallery-expand {
 .contacts-list li a:hover .btn_delete,.contacts-list li a:hover .btn{
 	visibility:visible;
 }
-#add_notebook,#add_note,#join_action{
+#add_user,#add_build,#add_room{
 	position:absolute;
 	right:15px;
 	top:4px;
