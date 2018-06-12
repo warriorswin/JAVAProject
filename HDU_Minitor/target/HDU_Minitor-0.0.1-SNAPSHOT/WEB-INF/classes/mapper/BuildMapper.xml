@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Dept.xml 在com.tarena.entity 包中 -->  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.hdu.HDU_Minitor.dao.BuildDao">
+	<!-- 查询关联的监控楼 -->
+	<select id="findBuildById" resultMap="BuildAndRoomResultMap">
+		SELECT HMB.* ,'${userID}'
+		uid FROM hdu_monitor_build HMB
+		WHERE HMB.build_id IN
+		(SELECT
+		HURB.build_id FROM hdu_user_role_build HURB WHERE user_id=#{userID})
+		ORDER BY HMB.build_number
+	</select>
+	<resultMap type="cn.hdu.HDU_Minitor.entity.Build"
+		id="BuildAndRoomResultMap">
+		<id column="build_id" property="buildID" />
+		<result column="build_number" property="buildNumber" />
+		<result column="build_name" property="buildName" />
+		<collection property="rooms"
+			ofType="cn.hdu.HDU_Minitor.entity.Room"
+			select="cn.hdu.HDU_Minitor.dao.RoomDao.findRoomById"
+			column="{userID=uid,buildID=build_id}">
+		</collection>
+	</resultMap>
+	
+	<select id="findBuildByNum" parameterType="String" resultMap="Build1">
+	  SELECT * FROM hdu_monitor_build WHERE build_number=#{build_number}
+	</select>
+	<resultMap id="Build1" type="cn.hdu.HDU_Minitor.entity.Build">
+		<id property="buildID" column="build_id"></id>
+		<result property="buildName" column="build_name"></result>
+		<result property="buildNumber" column="build_number"></result>
+	</resultMap>
+
+	<insert id="save" parameterType="cn.hdu.HDU_Minitor.entity.Build">
+		INSERT INTO hdu_monitor_build(build_id,build_number,build_name) 
+		VALUES(#{buildID},#{buildNumber},#{buildName})
+	</insert>
+	
+</mapper>

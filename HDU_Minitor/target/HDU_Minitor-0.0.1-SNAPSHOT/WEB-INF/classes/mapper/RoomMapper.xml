@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Dept.xml 在com.tarena.entity 包中 -->  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.hdu.HDU_Minitor.dao.RoomDao">
+	<!-- 根据user_id查询关联的监控房间 -->
+	<select id="findRoomById" parameterType="java.util.Map"
+		resultMap="RoomResultMap">
+
+		SELECT r.room_id,r.room_name FROM (
+		SELECT
+		HMBR.* FROM
+		hdu_monitor_build_room HMBR WHERE HMBR.room_id IN
+		(SELECT
+		HURR.room_id
+		FROM hdu_user_role_room HURR WHERE user_id=#{userID})
+		) r
+		WHERE
+		r.build_id=#{buildID}
+
+	</select>
+	<resultMap type="cn.hdu.HDU_Minitor.entity.Room"
+		id="RoomResultMap">
+		<id column="room_id" property="roomID" />
+		<result column="room_name" property="roomName" />
+	</resultMap>
+	
+	
+	
+	<!-- 根据bind_id,查询room 信息，及与之关联的device信息 -->
+  <!--  一条sql语句
+	<select id="findRoomByBuildId" parameterType="String" 
+								resultMap="RoomDevice">
+		SELECT * FROM hdu_monitor_build_room R
+		  JOIN  hdu_monitor_device  D 
+		  ON(R.device_id=D.device)
+		WHERE R.build_id=#{build_id}  
+	</select>
+	<resultMap id="RoomDevice" type="cn.hdu.HDU_Minitor.entity.Room">
+		<id property="roomID" column="room_id"></id>
+		<result property="buildID" column="build_id"></result>
+		<result property="deviceID" column="device_id"></result>
+		<association>
+			
+		</association>
+	</resultMap>
+ -->
+ 	<!-- 使用两条sql语句查询   根据build_id ,查询room信息及device信息,查询楼栋所有的房间以及关联的设备信息-->
+ 	<select id="findRoomByBuildId" parameterType="String" 
+ 									resultMap="RoomDevice">
+ 		SELECT * FROM hdu_monitor_build_room WHERE build_id=#{build_id}	
+ 	</select>
+ 	<resultMap id="RoomDevice" type="cn.hdu.HDU_Minitor.entity.Room">
+ 		<id property="roomID" column="room_id"/>	
+ 		<result property="roomName" column="room_name"/>
+ 		<association property="device" 
+ 					  javaType="cn.hdu.HDU_Minitor.entity.Device"
+ 					  select="findDeviceByDeId" column="device_id">
+ 	
+ 		</association>
+   </resultMap>
+   <select id="findDeviceByDeId" parameterType="String" 
+   					resultType="cn.hdu.HDU_Minitor.entity.Device">
+   		SELECT * FROM  hdu_monitor_device WHERE device_id=#{device_id} 
+   </select>
+   
+   
+   
+  <!-- 查询该用户在在该楼栋的房间设备信息  -->
+  <select id="findRoomByBuUsId" parameterType="Map" resultMap="BuildsUesRoom">
+  	SELECT BR.room_id,BR.device_id,BR.room_name 
+	FROM hdu_user_role_room UR,
+			(SELECT * FROM hdu_monitor_build_room 
+			  WHERE build_id=#{build_id})BR
+	WHERE BR.room_id=UR.room_id and UR.user_id=#{user_id};
+  </select>
+  <resultMap  id="BuildsUesRoom" type="cn.hdu.HDU_Minitor.entity.Room">
+  	 <id property="roomID" column="room_id"></id>
+  	 <result property="roomName" column="room_name"></result>
+  	 <association property="device"
+  	 			  javaType="cn.hdu.HDU_Minitor.entity.Device"
+  	 			  select="findDeviceByDeId" column="device_id">
+  	 </association>
+  </resultMap>
+  
+  
+  <select id="findRoomByDId" parameterType="String" 
+  						resultType="cn.hdu.HDU_Minitor.entity.Room">
+  	SELECT room_id roomID,build_id buildID,device_id deviceID,room_name roomName
+    FROM hdu_monitor_build_room WHERE device_id=#{device_t}
+  </select>
+  
+  <insert id="save" parameterType="cn.hdu.HDU_Minitor.entity.Room">
+  	INSERT INTO hdu_monitor_build_room
+  	(room_id,build_id,device_id,room_name)
+     VALUES(#{roomID},#{buildID},#{deviceID},#{roomName});	
+  </insert>
+  
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Dept.xml 在com.tarena.entity 包中 -->  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.hdu.HDU_Minitor.dao.UserBuildDao">
+	<insert id="save" parameterType="map">
+		INSERT INTO hdu_user_role_build(user_id,build_id) 
+		VALUES(#{user_id},#{build_id})
+	</insert>
+	<select id="findByUserId" parameterType="String" 
+			resultType="cn.hdu.HDU_Minitor.entity.UserBuild">
+	    SELECT * FROM hdu_user_role_build WHERE user_id=#{user_id}
+		
+	</select>
+	<delete id="deleteByUId" parameterType="String">
+		DELETE FROM hdu_user_role_build WHERE user_id=#{user_id}
+	</delete>
+	<delete id="delete" parameterType="map">
+		DELETE FROM hdu_user_role_build 
+		WHERE user_id=#{user_id}
+		<if test="build_id!=null">
+		 	AND build_id=#{build_id}
+		 </if>
+	
+	</delete>
+	
+</mapper>

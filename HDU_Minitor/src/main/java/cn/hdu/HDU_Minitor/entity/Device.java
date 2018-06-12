@@ -126,8 +126,9 @@ public class Device implements Serializable{
 	public String toString() {
 		return "device[device_id:"+device_id+" device_ic:"+
 				device_ic+" device_it:"+device_it+" device_tc:"+
-				device_tt+" device_time:"+device_time+
+				device_tc+" device_tt:"+device_tt+" device_time:"+device_time+
 				" device_status:"+device_status+"]";
 	}
 	
 }
+
