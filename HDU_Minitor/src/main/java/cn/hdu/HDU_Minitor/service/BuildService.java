@@ -1,5 +1,6 @@
 package cn.hdu.HDU_Minitor.service;
 
+import cn.hdu.HDU_Minitor.entity.Build;
 import cn.hdu.HDU_Minitor.util.MinitorResult;
 
 public interface BuildService {
@@ -9,6 +10,10 @@ public interface BuildService {
 	 * @return
 	 */
 	public MinitorResult<Object> loadBuild(String user_id);
+	
+	
+	
+	
 	/*
 	 * 增加用户管理楼栋的权限，如果楼栋不存在则添加该该楼栋到数据库
 	 */

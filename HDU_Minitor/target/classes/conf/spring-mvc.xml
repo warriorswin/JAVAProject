@@ -23,6 +23,7 @@
 	<context:component-scan base-package="cn.hdu.HDU_Minitor"></context:component-scan>
 	<!-- 启用注解驱动 -->
 	<mvc:annotation-driven/>
+	<mvc:default-servlet-handler/>
 </beans>
 
 

@@ -30,7 +30,7 @@
 	<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
     <script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="media/js/jquery.dataTables.min.js"></script>
-     <script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
     
     	
 	<script type="text/javascript" src="scripts/alert.js"></script>
@@ -40,6 +40,11 @@
 	<script type="text/javascript" src="./scripts/users.js"></script>
 	<script type="text/javascript" src="./scripts/builds.js"></script>
 	<script type="text/javascript" src="./scripts/rooms.js"></script>
+	
+	<!-- 新增 -->
+	<script type="text/javascript" src="./scripts/manage.js"></script>
+	<script type="text/javascript" src="./scripts/json2.js"></script>
+	
 	<!-- 自定义工具js 加载 -->
 	<script type="text/javascript" src="./scripts/util.js"></script>
 	<!-- 页面加载完成加载 -->
@@ -60,6 +65,10 @@
 	 		 	addBuild();
 	 		 //增加楼栋监控的房间信息
 	 		 	addRoom();
+	 		 
+	 		 //新增部分
+	 		 //管理build
+	 		 	manageUser();
 	 		 
 	 		 //显示用户下拉菜单
 	 		  showUserSlideDown();
@@ -137,6 +146,15 @@
 											
 											<span id="admin_name"></span>
 										</a>
+									</li>
+									<li>
+										<a id="manage_build_id">管理楼层</a>
+									</li>
+									<li>
+										<a id="manage_room_id">管理房间</a>
+									</li>
+									<li>
+										<a id="manage_user_id">管理用户</a>
 									</li>
 								</ul>
 							</div>

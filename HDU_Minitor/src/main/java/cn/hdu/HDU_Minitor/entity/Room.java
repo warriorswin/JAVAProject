@@ -87,10 +87,13 @@ public class Room implements Serializable{
 		this.device = device;
 	}
 	
+	
 	@Override
 	public String toString() {
-		return "Room [roomID=" + roomID +", roomName=" + roomName + ", build=" + build + ", device=" + device + "]";
+		return "Room [roomID=" + roomID + ", roomName=" + roomName + ", buildID=" + buildID + ", deviceID=" + deviceID
+				+ ", build=" + build + ", device=" + device + "]";
 	}
+
 	public boolean checkRoom(List<String> roomIDs) {
 		if(roomIDs!=null) {
 			return roomIDs.contains(this.roomID);

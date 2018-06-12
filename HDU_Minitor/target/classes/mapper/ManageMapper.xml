@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.hdu.HDU_Minitor.dao.ManageDao">
+	
+	<!--
+	  	管理部分
+	  	添加楼层
+	 	@param build 楼层信息
+	 	@return 成功添加的数目
+	  -->
+	<insert id="addBuild" parameterType="cn.hdu.HDU_Minitor.entity.Build">
+		INSERT INTO hdu_monitor_build VALUES(
+			#{buildID},#{buildNumber},#{buildName}
+		)
+	</insert>
+	<!--
+		管理部分
+	 	查询所有楼层
+	 	@return 所有楼层信息 
+	 -->
+	<select id="findAllBuilds" resultMap="AllBuildsResult">
+		SELECT * FROM hdu_monitor_build
+	</select>
+	<resultMap type="cn.hdu.HDU_Minitor.entity.Build" id="AllBuildsResult">
+		<id property="buildID" column="build_id"/>
+		<result property="buildNumber" column="build_number"/>
+		<result property="buildName" column="build_name"/>
+	</resultMap>
+	
+	<!-- 根据楼层编号查询楼层信息 -->
+	<select id="findBuildByNumber" resultMap="AllBuildsResult">
+		SELECT * FROM hdu_monitor_build WHERE build_number=#{buildNumber}
+	</select>
+	
+	<!-- 根据楼层id查询楼层信息 -->
+	<select id="findBuildByID" resultMap="AllBuildsResult">
+		SELECT * FROM hdu_monitor_build WHERE build_id=#{buildID}
+	</select>
+	
+	<!-- 
+	 	 更新楼层信息
+	 	@param build 楼层的最新信息
+	 	@return 更改的个数
+	 -->
+	<update id="updateBuildInfo" parameterType="cn.hdu.HDU_Minitor.entity.Build">
+		UPDATE hdu_monitor_build SET build_number=#{buildNumber},
+		build_name=#{buildName} WHERE build_id=#{buildID}
+	</update>
+	
+	<!-- 
+		根据楼层id删除楼层信息
+	 	@param buildNumber 楼层id
+	 	@return 删除的个数
+	 -->
+	<delete id="deleteBuild">
+		DELETE FROM hdu_user_role_build WHERE build_id=#{buildID};
+		DELETE FROM hdu_user_role_room WHERE room_id IN (
+			SELECT room_id FROM hdu_monitor_build_room WHERE build_id=#{buildID}
+		);
+		DELETE FROM hdu_monitor_build_room WHERE build_id=#{buildID};
+		DELETE FROM hdu_monitor_build WHERE build_id=#{buildID};
+	</delete>
+	
+	<!-- 
+		根据楼层ID和房间的名字来查询设备ID
+	 	@param buildID 楼层 ID
+	 	@param roomName 房间名字
+	 	@return 设备ID
+	 -->
+	<select id="findRoombyBuild" resultType="string">
+		SELECT device_id FROM hdu_monitor_build_room WHERE build_id=#{buildID} AND room_name=#{roomName}
+	</select>
+	
+	<!-- 
+		根据房间ID查询设备的ID
+	 	@param roomID 房间ID
+	 	@return 设备ID
+	 -->
+	 <select id="findDeviceIDbyRoomID" resultType="string">
+	 	SELECT device_id FROM hdu_monitor_build_room WHERE room_id=#{roomID}
+	 </select>
+	 
+	 <!-- 
+	 	信息最新的room信息
+	  	@param room room信息
+	  	@return 更新成功的个数
+	  -->
+	 <update id="updateRoomByRoomID" parameterType="cn.hdu.HDU_Minitor.entity.Room">
+	 	UPDATE hdu_monitor_build_room SET room_name=#{roomName},device_id=#{deviceID}
+	 	WHERE room_id=#{roomID}
+	 </update>
+	 
+	 <!-- 
+	 	依据roomID删除room信息
+	 	@param roomID 房间ID
+	 	@return 删除的个数
+	  -->
+	  <delete id="deleteRoomByID">
+	  	DELETE FROM hdu_user_role_room WHERE room_id=#{roomID};
+	  	DELETE FROM hdu_monitor_build_room WHERE room_id=#{roomID};
+	  </delete>
+</mapper>
