@@ -1,0 +1,13 @@
+{"status":2,"msg":"查询成功",
+"data":[
+{"roomID":"a0c48d348d054f7b8089c70bf90eab3c","roomName":"101ÊÒ","build":null,
+"device":
+{"device_id":"1","device_ic":"30","device_it":"100","device_tc":"28","device_tt":"80","device_J":"32.32","device_W":"54.56","device_time":"20180528153620"}
+},
+
+{"roomID":"a578e0ed9a844bf5b86964dafc4b7e1f","roomName":"102ÊÒ","build":null,
+"device":
+{"device_id":"2","device_ic":"33.3","device_it":"105","device_tc":"29.7","device_tt":"70","device_J":"32.32","device_W":"54.56","device_time":"20180528153856"}
+}
+]
+}

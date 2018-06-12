@@ -3,7 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="cn.hdu.HDU_Minitor.dao.DeviceDao">
-  <insert id="save">
+  <insert id="save" parameterType="cn.hdu.HDU_Minitor.entity.Device">
+  	 INSERT INTO hdu_monitor_device (
+  	 device_id,device_ic,device_it,device_tc,device_tt,device_J,device_W,
+  	 													device_time,device_status)
+  	 VALUES(
+  	 #{device_id},#{device_ic},#{device_it},#{device_tc},#{device_tt},#{device_J},
+  	 								#{device_W},#{device_time},#{device_status}
+  	 )
   </insert>
   
 </mapper>
