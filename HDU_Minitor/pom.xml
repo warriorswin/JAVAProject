@@ -148,6 +148,7 @@
 			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
@@ -201,21 +202,6 @@
 		  <version>2.4</version>
 		</dependency>
 		<!-- sjon parese end -->
-		
-	    <!-- redis cache related.....start -->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>1.6.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.7.3</version>
-        </dependency>
-        <!-- redis cache related.....end -->
-		
-		
 	</dependencies>
 	<build>
 	<finalName>HDU_Minitor</finalName>

@@ -23,16 +23,10 @@
 	<context:component-scan base-package="cn.hdu.HDU_Minitor"></context:component-scan>
 	<!-- 启用注解驱动 -->
 	<mvc:annotation-driven/>
-<<<<<<< HEAD
 	<mvc:default-servlet-handler/>
-=======
-	
-	
 	<!-- 引入mqtt配置文件 -->
 	<import resource="./mqtt.xml"/>
 	
-	
->>>>>>> 2f42a079f3a3c42741509db1f8e3fcd360c81233
 </beans>
 
 
