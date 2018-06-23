@@ -17,12 +17,15 @@ public class AddRoomController {
 	private RoomService roomSerivce;
 	@RequestMapping("/addroom.do")
 	@ResponseBody
-	public  MinitorResult<Object> execute(String user_id,String build_id,
-											String room_name,String device_id){
-		System.out.println("user_id:"+user_id+",build_id:"+build_id+
-							",room_name:"+room_name+", device_id:"+
-								device_id);
-		return roomSerivce.addRoom(user_id, build_id, room_name, device_id);
+	public  MinitorResult<Object> execute(String user_id,String room_id){
+		System.out.println("user_id:"+user_id+",build_id:"+room_id);
+							
+		return roomSerivce.addRoom(user_id, room_id);
+	}
+	@RequestMapping("/loadotherrooms")
+	@ResponseBody
+	public MinitorResult<?> loadOtherRooms(String user_id,String build_id){
+		return roomSerivce.loadOtherRooms(user_id, build_id);
 	}
 
 }

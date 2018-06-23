@@ -12,5 +12,9 @@
   	 								#{device_W},#{device_time},#{device_status}
   	 )
   </insert>
+  <!-- 根据device_id查询设备历史信息 -->
+  <select id="findByDId" parameterType="String" resultType="cn.hdu.HDU_Minitor.entity.Device">
+  	SELECT * FROM hdu_monitor_device where device_id=#{device_id} Order By device_time
+  </select>
   
 </mapper>

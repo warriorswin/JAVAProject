@@ -42,9 +42,9 @@
   
 	<!-- 消息处理类 -->  
 	<int:service-activator id="startCaseService"  
-	    input-channel="startCase" ref="mqttCaseService" method="saveDeviceInfo" />  
+	    input-channel="startCase" ref="deviceService" method="saveDeviceInfo" />  
 	  
-	<bean id="mqttCaseService" class="cn.hdu.HDU_Minitor.service.DeviceService" />  
+	<bean id="deviceService" class="cn.hdu.HDU_Minitor.service.DeviceServiceImpl" />  
  
 
 </beans>

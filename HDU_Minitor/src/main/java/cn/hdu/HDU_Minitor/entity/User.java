@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class User implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

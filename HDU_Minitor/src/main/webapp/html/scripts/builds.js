@@ -97,22 +97,57 @@ function addBuild(){
 		}else{
 			$("#can").load( "alert/alert_addbuild.html");
 			$('#can').off("click",'#addbuild_sure');
+		
+			//加载该用户还没用管理权限的楼栋
+			$.ajax({
+				url:path+"/build/loadotherbuild",
+				type:"post",
+				data:{"user_id":user_id},
+				dataType:"json",
+				success:function(result){
+					if(result.status==0){
+						var builds=result.data;
+						  var b=$("#select_build option:first").text();  
+						  $("#select_build").html('<option>'+b+'</option>'); 
+						for(var i=0;i<builds.length;++i){
+							
+							$("#select_build").append(
+									"<option value='"+builds[i].buildID+"'>编号:"
+									+builds[i].buildNumber+"&nbsp;&nbsp;&nbsp;名称:"+builds[i].buildName+"</option>");
+						
+						}
+					}else{
+						alert(result.msg);
+					}
+				},
+				error:function(){
+					alert("加载没有管理权限的房间，请求错误！");
+				}
+			});
 			//按钮事件绑定On
 			$("#can").on("click","#addbuild_sure",function(){
 				var ok=true;
-				//参数获取
-				 var build_num=$("#input_buildnum").val().trim();
-				 var build_name=$("#input_buildname").val().trim();
-				 //格式检查
-				 if(build_num==""){
-					 ok=false;
-					 $("#input_buildnum").attr("placeholder","楼栋编号不能为空");
-				 };
-				 if(build_name==""){
-					 ok=false;
-					 $("#input_buildname").attr("placeholder","楼栋名字不能为空");
-					 
-				 };
+//				//参数获取
+//				 var build_num=$("#input_buildnum").val().trim();
+//				 var build_name=$("#input_buildname").val().trim();
+//				 //格式检查
+//				 if(build_num==""){
+//					 ok=false;
+//					 $("#input_buildnum").attr("placeholder","楼栋编号不能为空");
+//				 };
+//				 if(build_name==""){
+//					 ok=false;
+//					 $("#input_buildname").attr("placeholder","楼栋名字不能为空");
+//					 
+//				 };
+				//获取参数build_id
+				var build_id=$("#select_build").val();
+				var text=$("#select_build option:selected").text();
+				//字符串截取
+				var build_num=text.substring(text.indexOf(':')+1,text.indexOf('名')).trim();
+				var build_name=text.substring(text.lastIndexOf(':')+1).trim();
+				console.log(build_num+":"+build_name);
+				if(build_id=='请选择楼栋'){ok=false;alert("您没有选择楼栋");}
 				//发送ajax请求
 				 if(ok){
 					 $.ajax({
@@ -120,14 +155,13 @@ function addBuild(){
 						 type:"post",
 						 data:{
 							   "user_id":user_id,
-							   "build_num":build_num,
-							   "build_name":build_name
+							   "build_id":build_id
 							   },
 						dataType:"json",
 						success:function(result){
 							var status=result.status;
-							if(status==0||status==2){
-								var build_id=result.data;
+							if(status==0){
+								
 								createBuildLi(build_num,build_name,build_id,user_id);
 							}
 							alert(result.msg);
@@ -142,7 +176,7 @@ function addBuild(){
 			
 		}
 	});
-
+	return false;
 };
 function showBuildSlideDown(){
 	$("#build_ul").on("click",".btn_slide_down",function(){
@@ -167,6 +201,7 @@ function deleteBuild(){
 		 //获取参数
 		 var user_id=$li.data("user_id");
 		 var build_id=$li.data("build_id");
+		 console.log(user_id+"--"+build_id);
 		 //发送ajax请求
 		 $.ajax({
 			url:path+"/build/removebuild.do",

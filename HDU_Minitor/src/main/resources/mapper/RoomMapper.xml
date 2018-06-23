@@ -45,7 +45,8 @@
 		</association>
 	</resultMap>
  -->
- 	<!-- 使用两条sql语句查询   根据build_id ,查询room信息及device信息,查询楼栋所有的房间以及关联的设备信息-->
+ 	<!-- 使用两条sql语句查询   根据build_id ,
+ 	查询room信息及device信息,查询楼栋所有的房间以及关联的设备信息-->
  	<select id="findRoomByBuildId" parameterType="String" 
  									resultMap="RoomDevice">
  		SELECT * FROM hdu_monitor_build_room WHERE build_id=#{build_id}	
@@ -53,11 +54,11 @@
  	<resultMap id="RoomDevice" type="cn.hdu.HDU_Minitor.entity.Room">
  		<id property="roomID" column="room_id"/>	
  		<result property="roomName" column="room_name"/>
- 		<association property="device" 
+ 		<!-- <association property="devices" 
  					  javaType="cn.hdu.HDU_Minitor.entity.Device"
  					  select="findDeviceByDeId" column="device_id">
  	
- 		</association>
+ 		</association> -->
    </resultMap>
    <select id="findDeviceByDeId" parameterType="String" 
    					resultType="cn.hdu.HDU_Minitor.entity.Device">
@@ -67,7 +68,8 @@
    
    
   <!-- 查询该用户在在该楼栋的房间设备信息  -->
-  <select id="findRoomByBuUsId" parameterType="Map" resultMap="BuildsUesRoom">
+  <select id="findRoomByBuUsId" parameterType="Map" 
+  									resultMap="BuildsUesRoom">
   	SELECT BR.room_id,BR.device_id,BR.room_name 
 	FROM hdu_user_role_room UR,
 			(SELECT * FROM hdu_monitor_build_room 
@@ -77,17 +79,17 @@
   <resultMap  id="BuildsUesRoom" type="cn.hdu.HDU_Minitor.entity.Room">
   	 <id property="roomID" column="room_id"></id>
   	 <result property="roomName" column="room_name"></result>
-  	 <association property="device"
+  	 <collection property="devices"
   	 			  javaType="cn.hdu.HDU_Minitor.entity.Device"
   	 			  select="findDeviceByDeId" column="device_id">
-  	 </association>
+  	 </collection>
   </resultMap>
   
   
   <select id="findRoomByDId" parameterType="String" 
   						resultType="cn.hdu.HDU_Minitor.entity.Room">
   	SELECT room_id roomID,build_id buildID,device_id deviceID,room_name roomName
-    FROM hdu_monitor_build_room WHERE device_id=#{device_t}
+    FROM hdu_monitor_build_room WHERE device_id=#{device_id}
   </select>
   
   <insert id="save" parameterType="cn.hdu.HDU_Minitor.entity.Room">
@@ -96,4 +98,34 @@
      VALUES(#{roomID},#{buildID},#{deviceID},#{roomName});	
   </insert>
   
+  <!-- redis 定时查询device信息  重点是获得device_id，在redis中获得-->
+  <select id="fdRomByUsIdForRds" parameterType="Map" 
+  									resultMap="forRedis">
+  	SELECT BR.room_id,BR.device_id,BR.room_name 
+	FROM hdu_user_role_room UR,
+			(SELECT * FROM hdu_monitor_build_room 
+			  WHERE build_id=#{build_id})BR
+	WHERE BR.room_id=UR.room_id and UR.user_id=#{user_id}; 
+  </select>
+  <resultMap id="forRedis" 
+  						type="cn.hdu.HDU_Minitor.entity.Room">
+  	<id property="roomID" column="room_id" />
+  	<result property="roomName" column="room_name"/>
+  	<result property="deviceID" column="device_id"/>
+  </resultMap>
+  
+  <!-- 查询该用户在该楼栋还没有监控权限的房间 -->
+  <select id="findNotBelongUBRm" parameterType="map" resultMap="NotBelongRooms">
+  	SELECT * FROM hdu_monitor_build_room 
+  	WHERE build_id=#{build_id} 
+  	      AND room_id  NOT IN 
+  	      (SELECT HR.room_id FROM hdu_user_role_room HR WHERE user_id=#{user_id}) 
+  </select>
+  <resultMap id="NotBelongRooms" type="cn.hdu.HDU_Minitor.entity.Room">
+    <id property="roomID" column="room_id" />
+  	<result property="roomName" column="room_name"/>
+  	<result property="deviceID" column="device_id"/>
+  </resultMap>
+  
+ 
 </mapper>

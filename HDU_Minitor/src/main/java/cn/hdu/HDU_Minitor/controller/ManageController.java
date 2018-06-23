@@ -121,6 +121,7 @@ public class ManageController {
 			) {
 		System.err.println(type);
 		if("ALL".equals(type)) {
+			System.err.println(manageService.findAllRoomByBuild(buildID));
 			return manageService.findAllRoomByBuild(buildID);
 		}else {
 			return manageService.findDeviceIDbyRoomID(type);

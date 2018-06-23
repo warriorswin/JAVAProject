@@ -18,12 +18,15 @@ public class AddBuildContorller {
 	
 	@RequestMapping("/addbuild.do")
 	@ResponseBody
-	public MinitorResult<Object> excute(String user_id,
-												String build_num,
-												String build_name){
+	public MinitorResult<Object> excute(String user_id,String build_id){
 		System.out.println("user_id:"+user_id
-				+ " build_num:"+build_num+" build_name:"+build_name);
+				+ " build_id:"+build_id);
 		
-		return buildService.addBuild(user_id, build_num, build_name);
+		return buildService.addBuild(user_id,build_id);
+	}
+	@RequestMapping("/loadotherbuild")
+	@ResponseBody
+	public MinitorResult<?>loadOtherBuilds(String user_id){
+		return buildService.loadOtherBuild(user_id);
 	}
 }

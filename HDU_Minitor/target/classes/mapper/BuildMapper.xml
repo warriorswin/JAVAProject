@@ -32,10 +32,22 @@
 		<result property="buildName" column="build_name"></result>
 		<result property="buildNumber" column="build_number"></result>
 	</resultMap>
+	
 
 	<insert id="save" parameterType="cn.hdu.HDU_Minitor.entity.Build">
 		INSERT INTO hdu_monitor_build(build_id,build_number,build_name) 
 		VALUES(#{buildID},#{buildNumber},#{buildName})
 	</insert>
 	
+	<!-- 查询该用户还没有管理权限的build信息 -->
+	<select id="findNotBelongUser" parameterType="String" 
+					resultMap="BuildNotBelongUser">
+	SELECT HD.build_id ,HD.build_number,HD.build_name FROM hdu_monitor_build HD WHERE
+    HD.build_id NOT IN (SELECT build_id FROM hdu_user_role_build WHERE user_id=#{build_id});
+	</select>
+	<resultMap id="BuildNotBelongUser" type="cn.hdu.HDU_Minitor.entity.Build">
+		<id property="buildID" column="build_id"></id>
+		<result property="buildNumber" column="build_number"></result>
+		<result property="buildName" column="build_name"></result>
+	</resultMap>
 </mapper>

@@ -100,8 +100,8 @@ public class UserServiceImpl implements UserService{
 			String randompwd=MinitorUtil.createId().substring(0, 6);
 			 //发送短信
 			System.out.println(userPhone+":"+randompwd);
-			//Boolean bool=SendPhoneMsg.sendMsg(userPhone,randompwd);
-			Boolean bool=false;
+			Boolean bool=SendPhoneMsg.sendMsg(userPhone,randompwd);
+			//Boolean bool=false;
 			if(bool) {
 				result.setStatus(0);
 				result.setMsg("随机密码已发送");

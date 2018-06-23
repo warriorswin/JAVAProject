@@ -55,7 +55,8 @@ public class BuildServiceImpl implements BuildService {
 		return result;
 	}
 	@Override
-	public MinitorResult<Object> addBuild(String user_id, String build_num, String build_name) {
+	public MinitorResult<Object> addBuild(String user_id, String build_id) 
+	{
 		MinitorResult<Object> result=new MinitorResult<Object>();
 		//参数检查
 		if(user_id==null||"".equals(user_id)) {
@@ -63,70 +64,71 @@ public class BuildServiceImpl implements BuildService {
 			 result.setMsg("没有获得user_id");
 			 return result;
 		}
-		if(build_num==null||"".equals(build_num)) {
+		if(build_id==null||"".equals(build_id)) {
 			 result.setStatus(-1);
-			 result.setMsg("没有获得build_num");
+			 result.setMsg("没有获得build_id");
 			 return result;
-		}
-		if(build_name==null||"".equals(build_name)) {
-			 result.setStatus(-1);
-			 result.setMsg("没有获得user_id");
-			 return result;
-		}
-		//判断楼栋是否存在通过楼栋的名字
-		Build build=buildDao.findBuildByNum(build_num);
-		if(build==null) {
-			//该楼栋不存在，则创建
-			Build newBuild=new Build();
-			String newBuildId=MinitorUtil.createId();
-			newBuild.setBuildID(newBuildId);
-			newBuild.setBuildName(build_name);
-			newBuild.setBuildNumber(build_num);
-			//插入build
-			buildDao.save(newBuild);
-			//插入UserBuild
-			Map<String,String> ids=new HashMap<String,String>();
-			ids.put("user_id", user_id);
-			ids.put("build_id",newBuildId);
-			
-			userBuildDao.save(ids);
-			result.setStatus(0);
-			result.setMsg("楼栋信息已创建,并加入该用户管理权限");
-			result.setData(newBuildId);
-			return result;
-			
-		}else {
-			//判断楼栋是否已经添加到该用户管理
-			//查询该用户的所有楼栋信息
-			boolean exist=false;
-			List<UserBuild> userBuilds=userBuildDao.findByUserId(user_id); 
-			for(UserBuild userBuild:userBuilds) {
-				if(build.getBuildID().equals(userBuild.getBuild_id())) {
-					exist=true;
-				    break;
-				}
-				
-			}
-			//如果已存在已存在管理管理权限，则直接返回
-			if(exist) {
-				result.setStatus(1);
-				result.setMsg("该用户对该楼栋已有管理权限");
-				return result;
-				
-			}else {
-				//加入管理权限
-				Map<String,String> ids=new HashMap<String,String>();
-				ids.put("user_id", user_id);
-				ids.put("build_id", build.getBuildID());
-				userBuildDao.save(ids);
-				result.setStatus(2);
-				result.setMsg("权限加入成功");
-				result.setData(build.getBuildID());
-				return result;
-			}
 		}
 		
-	}
+//		//判断楼栋是否存在通过楼栋的名字
+//		Build build=buildDao.findBuildByNum(build_num);
+//		if(build==null) {
+//			//该楼栋不存在，则创建
+//			Build newBuild=new Build();
+//			String newBuildId=MinitorUtil.createId();
+//			newBuild.setBuildID(newBuildId);
+//			newBuild.setBuildName(build_name);
+//			newBuild.setBuildNumber(build_num);
+//			//插入build
+//			buildDao.save(newBuild);
+//			//插入UserBuild
+//			Map<String,String> ids=new HashMap<String,String>();
+//			ids.put("user_id", user_id);
+//			ids.put("build_id",newBuildId);
+//			
+//			userBuildDao.save(ids);
+//			result.setStatus(0);
+//			result.setMsg("楼栋信息已创建,并加入该用户管理权限");
+//			result.setData(newBuildId);
+//			return result;
+//			
+//		}else {
+//			//判断楼栋是否已经添加到该用户管理
+//			//查询该用户的所有楼栋信息
+//			boolean exist=false;
+//			List<UserBuild> userBuilds=userBuildDao.findByUserId(user_id); 
+//			for(UserBuild userBuild:userBuilds) {
+//				if(build.getBuildID().equals(userBuild.getBuild_id())) {
+//					exist=true;
+//				    break;
+//				}
+//				
+//			}
+//			//如果已存在已存在管理管理权限，则直接返回
+//			if(exist) {
+//				result.setStatus(1);
+//				result.setMsg("该用户对该楼栋已有管理权限");
+//				return result;
+//				
+//			}else {
+  			  //加入管理权限
+				Map<String,String> ids=new HashMap<String,String>();
+				ids.put("user_id", user_id);
+				ids.put("build_id",build_id);
+				try {
+						userBuildDao.save(ids);
+						result.setStatus(0);
+						result.setMsg("权限加入成功");
+						
+				}catch(Exception e) {
+					   result.setStatus(-1);
+					   result.setMsg("楼栋权限加入失败，请稍后重试！");
+					
+				}
+				return result;
+		}
+		
+	
 	@Override
 	public MinitorResult<Object> removeBuild(String user_id, 
 			                                    String build_id) {
@@ -168,6 +170,20 @@ public class BuildServiceImpl implements BuildService {
 		 }
 		
 
+	}
+	@Override
+	public MinitorResult<?> loadOtherBuild(String user_id) {
+		MinitorResult<Object> result=new MinitorResult<Object>();
+		try {
+			List<Build> builds=buildDao.findNotBelongUser(user_id);
+			result.setStatus(0);
+			result.setMsg("查询成功");
+			result.setData(builds);
+		}catch(Exception e) {
+			result.setStatus(-1);
+			result.setMsg("查询失败");
+		}
+		return result;
 	}
 
 }

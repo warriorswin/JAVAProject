@@ -2,6 +2,8 @@ package cn.hdu.HDU_Minitor.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Device implements Serializable{
 	
 	private String device_id; //设备id,设备上传

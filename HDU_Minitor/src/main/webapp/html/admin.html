@@ -1,4 +1,4 @@
-﻿
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  
 <html>
     <head>
         <meta charset="utf-8">
@@ -47,6 +47,12 @@
 	
 	<!-- 自定义工具js 加载 -->
 	<script type="text/javascript" src="./scripts/util.js"></script>
+	<!--highcharts--->
+	  <!--<script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>-->
+	  <script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+      <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+	  <script src="https://img.hcharts.cn/highcharts/modules/boost.js"></script>
+	  <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 	<!-- 页面加载完成加载 -->
 	<script type="text/javascript">
 	 	$(function(){
@@ -78,6 +84,8 @@
 	 	     showBuildSlideDown();
 	 	     //删除楼栋
 	 	     deleteBuild();
+	 	     //删除房间管理权限
+	 	     deleteRoom();
 	 	 
 	 		
 	 		 
@@ -111,6 +119,7 @@
                     </ul>
                 </div>
             </div>
+          
             <form class="form-inline" onsubmit="return false;">
                 <button type="button" class="btn btn-default btn-expand-search"><i class="fa fa-search"></i></button>
                 <div class="toggle-search">
@@ -148,7 +157,7 @@
 										</a>
 									</li>
 									<li>
-										<a id="manage_build_id">管理楼层</a>
+										<a id="manage_build_id">管理楼栋</a>
 									</li>
 									<li>
 										<a id="manage_room_id">管理房间</a>
@@ -286,11 +295,11 @@
 											<th id="test" style="width:5%"></th>
 											<th>房间编号</th>
 
-											<th>当前温度(C)</th>
+											<th>温度(C)</th>
 
 											<th >温度阈值(C)</th>
 
-											<th >当前漏电流(mA)</th>
+											<th >漏电流(mA)</th>
 
 											<th >漏电流阈值(mA)</th>
 											<th >上报时间(s)</th>

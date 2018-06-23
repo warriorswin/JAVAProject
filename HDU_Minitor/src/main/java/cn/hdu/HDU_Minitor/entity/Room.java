@@ -23,6 +23,31 @@ public class Room implements Serializable{
 	private String deviceID;
 	//房间对应的监控楼
 	private Build build;
+	//房间对应的设备信息 redis
+	private Device device;
+	//数据库中所有该设备信息 MySQL
+	private List<Device> devices;
+	/**
+	 * @return the devices
+	 */
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	/**
+	 * @param devices the devices to set
+	 */
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
+	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	/**
 	 * @return the buildID
 	 */
@@ -50,9 +75,7 @@ public class Room implements Serializable{
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
 	}
-	//房间对应的设备，暂时由String类型代替
-	//TODO 需要修改
-	private Device device;
+
 	
 	
 	public String getRoomID() {

@@ -10,6 +10,9 @@ public interface BuildService {
 	 * @return
 	 */
 	public MinitorResult<Object> loadBuild(String user_id);
+	//查询该user没有管理权限的build信息
+	public MinitorResult<?>loadOtherBuild(String user_id);
+	
 	
 	
 	
@@ -18,8 +21,7 @@ public interface BuildService {
 	 * 增加用户管理楼栋的权限，如果楼栋不存在则添加该该楼栋到数据库
 	 */
 	public MinitorResult<Object> addBuild(String user_id,
-												String build_num,
-												String build_name);
+												String build_id);
 	/*
 	 * 移除该用户build,只操作了hdu_user_role_build,
 	 * 以及build的该user的管理的room关系，即操作hdu_user_role_room

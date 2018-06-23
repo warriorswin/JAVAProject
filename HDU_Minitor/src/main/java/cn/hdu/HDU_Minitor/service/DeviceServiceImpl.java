@@ -1,21 +1,30 @@
 package cn.hdu.HDU_Minitor.service;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import cn.hdu.HDU_Minitor.dao.DeviceDao;
 import cn.hdu.HDU_Minitor.entity.Device;
+import cn.hdu.HDU_Minitor.util.MinitorResult;
 import net.sf.json.JSONObject;
 
-public class DeviceService {
+/*
+ * 在mqtt.xml中由spring-管理
+ */
+public class DeviceServiceImpl implements DeviceService {
 	
 	@Resource(name="deviceDao")
 	private DeviceDao deviceDao;
+	@Resource(name="redisTemplate")
+	private RedisTemplate<String, Device> redisTemp;
 	public void saveDeviceInfo(String message) {
 		//解析sjon字符串
 		JSONObject obj=JSONObject.fromObject(message);
@@ -45,11 +54,44 @@ public class DeviceService {
 		if(1!=deviceDao.save(device)) {
 			System.out.println("error");
 		};
+		//存入
+		ValueOperations<String, Device> list = redisTemp.opsForValue();
+		list.set(device.getDevice_id(), device);
 		
-		System.out.println(device);
+		
 		
 	
 		
+	}
+	@Override
+	public MinitorResult<?> loadDvceHistyData(String device_id) {
+			MinitorResult<Object> result=new MinitorResult<Object>();
+			try {
+				List<Device> devcDatas=deviceDao.findByDId(device_id);
+				result.setStatus(0);
+				result.setMsg("查询成功");
+				result.setData(devcDatas);
+			}catch(Exception e){
+				result.setStatus(-1);
+				result.setMsg("查询异常,请稍后重试");
+				
+			}
+		return result;
+	}
+	@Override
+	public MinitorResult<?> loadLastDvcDataFmRds(String device_id) {
+		MinitorResult<Device> result=new MinitorResult<Device>();
+		try {
+			ValueOperations<String, Device> list = redisTemp.opsForValue();
+			Device device=list.get(device_id);
+			result.setStatus(0);
+			result.setMsg("查询成功");
+			result.setData(device);
+		}catch(Exception e) {
+			result.setStatus(-1);
+			result.setMsg("Redis查询失败");	
+		}
+		return  result;
 	}
 
 }

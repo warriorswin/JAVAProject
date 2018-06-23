@@ -111,7 +111,7 @@ function manageRoom(){
 		var buildName = $("#select_room_buildName_yw_2").val();
 		$("#select_roomName_yw_2").find("option").not(":first").remove();
 		$("#input_roomNumber_yw_2").val("");
-		if(buildName!="请选择楼层名字"){
+		if(buildName!="请选择楼栋名字"){
 			$.ajax({
 				url:"/HDU_Minitor/manage/room/ALL/"+buildName,
 				type:"get",
@@ -133,7 +133,7 @@ function manageRoom(){
 	$("#can").on("change","#select_roomName_yw_2",function(){
 		var roomID = $("#select_roomName_yw_2").val();
 		$("#input_roomNumber_yw_2").val("");
-		if(roomID!="请选择楼层名字"){
+		if(roomID!="请选择楼栋名字"){
 			$.ajax({
 				url:"/HDU_Minitor/manage/room/"+roomID+"/null",
 				type:"get",
@@ -157,7 +157,7 @@ function manageRoom(){
 		var deviceID = $("#input_roomNumber_yw_2").val().trim();
 		var roomID = $("#select_roomName_yw_2").val();
 		var buildID = $("#select_room_buildName_yw_2").val();
-		if(buildName!="请选择楼层名字"&&roomName!="请选择楼层名字"){
+		if(buildName!="请选择楼栋名字"&&roomName!="请选择楼栋名字"){
 			$("#can").load("alert/alert_manage_room_update_sure.html",function(){
 				$("#input_update_buildName_room_yw").val(buildName);
 				$("#input_update_roomName_room_yw").val(roomName);

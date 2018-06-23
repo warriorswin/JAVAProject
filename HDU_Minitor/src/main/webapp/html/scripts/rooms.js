@@ -3,6 +3,7 @@ var deviceArray=new Array();
 var flag=true;
 var t1;
 var hadTable=true;
+var changeColor=true;
 //
 //"oLanguage": {  
 //	"sLengthMenu": "每页显示 _MENU_ 条记录",  
@@ -44,7 +45,8 @@ function createTable(build_id,user_id){
         	      "searchable": false,
         	      //"defaultContent": '<span class="row-details row-details-close"></span>',
         	      
-         }],
+         }
+         ],
          "ajax":{
         	 "url":path+"/room/loadroom.do?ran="+Math.random(),
         	 "type":"post",
@@ -100,10 +102,28 @@ function createTable(build_id,user_id){
               },  
               {  
                    
-             	 "data":"device.device_status",
+             	 //"data":"device.device_status",
                   "bSortable": false ,
                   "sClass": "center",
                   "defaultContent":"null",
+                  "createdCell":function(td,cellData,rowData,row,col){
+                	  var device=rowData.device;
+                	  if(device!=null){
+                	    console.log(rowData.device.device_status);
+                	    if(rowData.device.device_status!='0'){
+                	    	$(td).parent().css('color','red');
+                	    	$(td).html("异常");
+                	    	
+                	    }else{
+                	    	$(td).html("正常");
+                	    } 
+                	  }else{
+                		    $(td).parent().css('color','red');
+                		    $(td).html("未接入");
+                	  }
+                	
+                	 
+                  }
               },
               {  
             	   "sTitle": "device_id",
@@ -116,6 +136,7 @@ function createTable(build_id,user_id){
             	   "aSortable":false,
             	   "visible":false,
                }
+
               ]
             
              
@@ -201,30 +222,60 @@ function addRoom(){
 		
 		}else{
 		
-			$("#can").load("alert/alert_addroom.html");//解除绑定
-			$('#can').off("click",'#addroom_sure');
+			$("#can").load("alert/alert_addroom.html");
+			//发送ajax请求加载该楼该用户还没有监控权限的房间
+			$.ajax({
+				url:path+"/room/loadotherrooms",
+				type:"post",
+				data:{"user_id":user_id,"build_id":build_id},
+				dataType:"json",
+				success:function(result){
+					 var b=$("#select_room option:first").text();  
+					  $("#select_room").html('<option>'+b+'</option>');
+					if(result.status==0){
+						var rooms=result.data;
+						for(var i=0;i<rooms.length;++i){
+							$("#select_room").append(
+									"<option value='"+rooms[i].roomID+"'>房间名:"+
+							rooms[i].roomName+"&nbsp;&nbsp;&nbsp;device_id:"+rooms[i].deviceID
+									+"</option>");
+						}
+					}
+					//console.log(result.data);
+					//添加下拉菜单
+					
+				},
+				error:function(){
+					alert("加载房间出现错误，请稍后重试！");
+				}
+				
+			});
+			$('#can').off("click",'#addroom_sure');//解除绑定
 			$("#can").on("click","#addroom_sure",function(){
-				//获取请求参数
-				var room_name=$("#input_roomname").val().trim();
-				var device_id=$("#input_deviceid").val().trim();
-				//检查格式
-				if(room_name==''){
-					$("#input_roomname").attr("placeholder","房间名不能为空");
-				}
-				if(device_id==''){
-					$("#input_deviceid").attr("placeholder","设备ID不能为空");
-				}
-				//发送ajax请求
+//				//获取请求参数
+//				var room_name=$("#input_roomname").val().trim();
+//				var device_id=$("#input_deviceid").val().trim();
+//				//检查格式
+//				if(room_name==''){
+//					$("#input_roomname").attr("placeholder","房间名不能为空");
+//				}
+//				if(device_id==''){
+//					$("#input_deviceid").attr("placeholder","设备ID不能为空");
+//				}
+//				//发送ajax请求
+				var room_id=$("#select_room").val().trim();
+				if(room_id!="请选择房间"){
 				$.ajax({
 					url:path+"/room/addroom.do",
 					type:"post",
 					data:{ "user_id":user_id,
-						   "build_id":build_id,
-						   "room_name":room_name,
-						   "device_id":device_id
+						   "room_id":room_id
 						   },
 				    dataType:"json",
 				    success:function(result){
+				    	if(result.status==0){
+				    		 tables.ajax.reload();
+				    	}
 				    	alert(result.msg);
 				    },
 				    error:function(){
@@ -233,8 +284,46 @@ function addRoom(){
 					
 					
 				});
+			 }
 			});
 		}
 	});
 	
-}
+};
+
+//删除该用户该楼栋的房间管理权限
+function deleteRoom(){
+	$("#sample_129").on("click","#deleteRoomRlashp",function(){
+		var nTr = $(this).prev().prev();
+		var room_id=nTr.html().trim();
+		$build_li=$("#build_ul a.checked").parent();
+		var user_id=$build_li.data("user_id");
+		console.log(room_id+":"+user_id);
+		if(room_id!=undefined&&user_id!=undefined){
+			//发送ajx请求
+			$.ajax({
+				url:path+"/room/deleteRURelshp",
+			    type:"post",
+			    data:{"user_id":user_id,"room_id":room_id},
+			    dataType:"json",
+			    success:function(result){
+			    	if(result.status==0){
+			    		//删除成功立即刷新table
+			    		 tables.ajax.reload();
+			 		  	  //reload();
+			    	}
+			    	alert(result.msg);
+			    	
+			    },
+			    error:function(){
+			    	alert("请求超时，请稍后重试");
+			    },
+			});
+		}
+		
+		//console.log();
+	});
+};
+
+	
+

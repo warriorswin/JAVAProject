@@ -166,8 +166,10 @@ public class ManageServiceImpl implements ManageService {
 			result.setStatus(1);
 			result.setMsg("查询成功");
 			result.setData(rooms);
+			System.err.println(result);
 			return result;
 		} catch (Exception e) {
+			System.err.println("error");
 			e.printStackTrace();
 			result.setStatus(0);
 			result.setMsg("系统繁忙请稍后再试！");

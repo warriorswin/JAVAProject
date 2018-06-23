@@ -1,5 +1,8 @@
 package cn.hdu.HDU_Minitor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class UserRoom {
 	private String user_id;
 	private String room_id;
